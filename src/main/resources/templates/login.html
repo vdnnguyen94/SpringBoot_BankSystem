@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="ISO-8859-1">
+    <title>Login Page</title>
+    <link rel="stylesheet" type="text/css" href="/css/style.css">
+</head>
+<body>
+
+    <!-- Navbar -->
+    <nav class="navbar">
+        <div class="logo">Banking App</div>
+        <ul class="nav-links">
+            <li><a href="/">Register</a></li>
+            <li><a href="/login">Login</a></li>
+            <li><a href="/show">List Customers</a></li>
+        </ul>
+    </nav>
+
+    <div class="container">
+		<form th:action="@{login}" th:object="${loginForm}" method="post">
+		<P> User Name: 
+		            <input type="text" name="username"> </P>
+		 <p>Password: 
+		            <input type="password" name="password"> </p>
+		 <p>       
+		            <input type="submit" value="Login"> </p>
+		         
+		</form>
+            <h2 th:if="${errorMessage}" th:text="${errorMessage}" class="error-message"></h2>
+
+    </div>
+
+</body>
+</html>
