@@ -64,3 +64,11 @@ VALUES
 Select * from Customer;
 use Comp303FinTech;
 desc Account;
+
+-- Adding Constraint
+use Comp303FinTech;
+ALTER TABLE Account ADD CONSTRAINT check_overdraft 
+CHECK (
+    (SELECT hasOverDraft FROM AccountType WHERE AccountType.accountTypeId = Account.accountTypeId) 
+    OR overDraftLimit = 0.00
+);

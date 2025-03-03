@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
 
@@ -81,14 +82,49 @@ public class BankAppController {
 	    	System.out.println("-----------Login Success Success---------Line 72");
 	        System.out.println("Accounts: " + accounts);
 
-	        return "customer";
+	        //return "customer"; Causing Connection LOST when refresh page
+	        return "redirect:/CustomerDetails/" + loggedInCustomer.getCustomerId();
 	    } else {
 	    	message="Invalid Credentials";
 	    	m.addAttribute("errorMessage",message);
 	        return "login";
 	    }
 		
-	
 	}
 	
+	
+	@GetMapping("/CustomerDetails/{customerId}")
+	public String customerDetails(@PathVariable int customerId, Model model) {
+	    Customer customer = customerRepository.findById(customerId)
+	            .orElseThrow(() -> new RuntimeException("Customer not found"));
+
+	    List<Account> accounts = accountRepository.findByCustomer(customer);
+	    
+	    model.addAttribute("customer", customer);
+	    model.addAttribute("accounts", accounts);
+	    return "customer"; 
+	}
+	
+	@PostMapping("/update")
+	public String updateCustomer(@RequestParam int customerId, 
+	                             @RequestParam String address, 
+	                             @RequestParam String phone, 
+	                             @RequestParam String emailId, 
+	                             RedirectAttributes redirectAttributes) {
+	    Customer customer = customerRepository.findById(customerId)
+	            .orElseThrow(() -> new RuntimeException("Customer not found"));
+
+	    // Update fields
+	    customer.setAddress(address);
+	    customer.setPhone(phone);
+	    customer.setEmailId(emailId);
+
+	    // Save updated customer
+	    customerRepository.save(customer);
+	    // model not working if using redirect
+		//model.addAttribute("successMessage", "Your account is successfully updated");
+	    redirectAttributes.addFlashAttribute("successMessage", "Your account is successfully updated");
+	    // Reload customer details
+	    return "redirect:/CustomerDetails/" + customerId;
+	}
 }
