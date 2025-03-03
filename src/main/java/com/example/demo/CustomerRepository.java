@@ -15,7 +15,6 @@ public interface CustomerRepository extends JpaRepository<Customer, Integer>{
 	@Query("SELECT c FROM Customer c WHERE c.username = :username AND c.password = :password")
 	List<Customer> findByUserNameAndPassword(@Param("username") String username, @Param("password") String password);
 
-	
 	//Native Query
 	//@Query(value = "SELECT * FROM employee WHERE jobtitle = :title", nativeQuery = true)
 	//List<Employee> findByJobTitle(String title);

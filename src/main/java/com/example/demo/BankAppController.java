@@ -19,6 +19,9 @@ public class BankAppController {
 	
 	@Autowired
     private CustomerRepository customerRepository;
+
+	@Autowired
+	private AccountRepository accountRepository;
 	
 	@RequestMapping("/")
 	public String home()
@@ -35,6 +38,7 @@ public class BankAppController {
 	
 		try {
 			// Attempt to save the new customer to the database
+	        
 			customerRepository.save(newAccount);
 			System.out.println("SUCCESS");
 		} catch (Exception e) {
@@ -70,8 +74,13 @@ public class BankAppController {
 	    if (!customers.isEmpty()) {
 	    	Customer loggedInCustomer = customers.get(0);
 	    	m.addAttribute("customer", loggedInCustomer);
+	    	
+	        List<Account> accounts = accountRepository.findByCustomer(loggedInCustomer);
+	        m.addAttribute("accounts", accounts);
 	    	System.out.println(loggedInCustomer);
 	    	System.out.println("-----------Login Success Success---------Line 72");
+	        System.out.println("Accounts: " + accounts);
+
 	        return "customer";
 	    } else {
 	    	message="Invalid Credentials";

@@ -4,9 +4,13 @@ package com.example.demo;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import java.sql.Date;
 //import java.util.Date;
+import java.util.List;
 
 //Customer entity class - Model class
 @Entity
@@ -34,6 +38,7 @@ public class Customer {
     private String emailId;
     @Column(name="phone")
     private String phone;
+
 
     public Customer() {
     }
@@ -133,6 +138,17 @@ public class Customer {
     public void setPhone(String phone) {
         this.phone = phone;
     }
+    
+    @OneToMany(mappedBy = "customer")
+    private List<Account> accounts;
+    
+    public void setAccounts(List<Account> accounts) {
+        this.accounts = accounts;
+    }
+    public List<Account> getAccounts() {
+        return accounts;
+    }
+
     
     @Override
     public String toString() {

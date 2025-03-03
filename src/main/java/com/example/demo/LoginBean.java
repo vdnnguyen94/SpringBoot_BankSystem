@@ -25,7 +25,7 @@ public class LoginBean {
     public String toString() {
         return "LoginBean{" +
                 "username='" + username + '\'' +
-                ", password='" +password+ // Masking password for security
+                ", password='" +password+ 
                 "'}";
     }
 	
