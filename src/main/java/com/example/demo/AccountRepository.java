@@ -15,7 +15,7 @@ public interface AccountRepository  extends JpaRepository<Account, Integer> {
     List<Account> findByCustomer(Customer customer);
 
     // Find an account by its account number
-    Account findByAccountNumber(String accountNumber);
+    Account findByAccountNumber(int accountNumber);
 
     // Find accounts with a balance greater than a specified amount
     List<Account> findByBalanceGreaterThan(double amount);

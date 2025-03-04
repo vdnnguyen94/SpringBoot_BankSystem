@@ -21,7 +21,7 @@ public class Account {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "accountNumber")
-    private String accountNumber;
+    private int  accountNumber;
 
     @Column(name = "balance", nullable = false)
     private double balance;
@@ -31,17 +31,17 @@ public class Account {
     private Customer customer;
     public Account() {}
 
-    public Account(String accountNumber, double balance, Customer customer) {
+    public Account(int  accountNumber, double balance, Customer customer) {
         this.accountNumber = accountNumber;
         this.balance = balance;
         this.customer = customer;
     }
 
-    public String getAccountNumber() {
+    public int  getAccountNumber() {
         return accountNumber;
     }
 
-    public void setAccountNumber(String accountNumber) {
+    public void setAccountNumber(int  accountNumber) {
         this.accountNumber = accountNumber;
     }
 
