@@ -29,12 +29,23 @@ public class Account {
     @ManyToOne
     @JoinColumn(name = "customerId", nullable = false)
     private Customer customer;
+    
+    @Column(name = "overDraftLimit")
+    private double overDraftLimit;
+    
+    @ManyToOne
+    @JoinColumn(name = "accountTypeId", nullable = false)
+    private AccountType accountType; 
+    
     public Account() {}
 
-    public Account(int  accountNumber, double balance, Customer customer) {
+    
+    public Account(int  accountNumber, double balance, double overDraftLimit, Customer customer, AccountType accountType) {
         this.accountNumber = accountNumber;
         this.balance = balance;
+        this.overDraftLimit = overDraftLimit;
         this.customer = customer;
+        this.accountType = accountType;
     }
 
     public int  getAccountNumber() {
@@ -61,10 +72,17 @@ public class Account {
         this.customer = customer;
     }
     
+    public AccountType getAccountType() {
+        return accountType;
+    }
+
+    public void setAccountType(AccountType accountType) {
+        this.accountType = accountType;
+    }
     @Override
     public String toString() {
         return "Account Number=" + accountNumber + 
-               ", Balance= $" + String.format("%.2f", balance) + "";
+               ", Balance= $" + String.format("%.2f", balance) + "\n" + accountType;
     }
     
     public String printAccountDetails() {

@@ -11,12 +11,15 @@ import org.springframework.stereotype.Repository;
 public interface AccountRepository  extends JpaRepository<Account, Integer> {
 
 	
-    // Find all accounts belonging to a specific customer
+    // list Accounts related to Customers
     List<Account> findByCustomer(Customer customer);
 
     // Find an account by its account number
     Account findByAccountNumber(int accountNumber);
 
-    // Find accounts with a balance greater than a specified amount
+    // List accounts with a balance greater specific variable
     List<Account> findByBalanceGreaterThan(double amount);
+    
+    // list accounts by type
+    List<Account> findByAccountType(AccountType accountType);
 }
