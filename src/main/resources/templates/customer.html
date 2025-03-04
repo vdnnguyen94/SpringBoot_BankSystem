@@ -71,8 +71,13 @@
 
 	<div class="container">
 	    <h2>Your Accounts</h2>
+	    <a th:href="@{/CreateAccount/{customerId}(customerId=${customer.customerId})}" class="btn">Create Account</a>
 	    <ul>
-	        <li th:each="account : ${accounts}" th:text="${account}"></li>
+            <li th:each="account : ${accounts}">
+                <span th:text="${account}"></span>
+                <a th:href="@{/UpdateAccount/{accountNumber}(accountNumber=${account.accountNumber})}" class="btn">Update Balance</a>
+                <a th:href="@{/deleteAccount/{accountNumber}(accountNumber=${account.accountNumber})}" class="btn btn-danger">Delete</a>
+            </li>
 	    </ul>
 	</div>
 </body>
