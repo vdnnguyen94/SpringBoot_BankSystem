@@ -8,6 +8,9 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+
 import java.sql.Date;
 //import java.util.Date;
 import java.util.List;
@@ -17,12 +20,15 @@ import java.util.List;
 @Table(name="Customer")
 public class Customer {
     
+	@NotNull(message = "Customer ID is mandatory")
     @Id
     @Column(name="customerid")
     private int customerId;
     @Column(name="username", nullable=false, unique=true)
+    @NotBlank(message = "Username is mandatory")
     private String username;
     @Column(name="password", nullable=false)
+    @NotBlank(message = "Password is mandatory")
     private String password;
     @Column(name="customername")
     private String customerName;

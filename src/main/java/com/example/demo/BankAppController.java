@@ -3,6 +3,7 @@ package com.example.demo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -12,6 +13,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import jakarta.validation.Valid;
 
 import java.util.List;
 
@@ -33,13 +36,27 @@ public class BankAppController {
 		return "index";
 	}
 	
-	
+	@RequestMapping("/register")
+	public String registerForm()
+	{
+		return "registercustomer";
+	}
 	@PostMapping("/register")
-	public ModelAndView register(@ModelAttribute(name = "registerForm") Customer newAccount) 
+	public String register(@Valid @ModelAttribute(name = "registerForm") Customer newAccount,
+			BindingResult bindingResult, 
+            RedirectAttributes redirectAttributes)
 	{
 		System.out.println("-----------TESTING---------");
 		System.out.println("Customer Registration Data: " + newAccount.toString());
 	
+	    // Check for validation errors
+	    if (bindingResult.hasErrors()) {
+	        // Capture error messages
+	        redirectAttributes.addFlashAttribute("errorMessage", "Please fill in all required fields correctly.");
+	        redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.registerForm", bindingResult);
+	        redirectAttributes.addFlashAttribute("registerForm", newAccount);
+	        return "redirect:/register";  // Redirect back to registration page
+	    }
 		try {
 			// Attempt to save the new customer to the database
 	        
@@ -48,10 +65,11 @@ public class BankAppController {
 		} catch (Exception e) {
 			// Log the exception and set the error message in the model
 			System.out.println("Error saving customer: " + e.getMessage());
-			return new ModelAndView("show","errorMessage",e.getMessage());
+			redirectAttributes.addFlashAttribute("errorMessage", "Error saving customer: " + e.getMessage());
+	        return "redirect:/register";
 		}
 		    
-	    return new ModelAndView("show","customers", customerRepository.findAll());
+	    return "redirect:/show";
 	}
 	
 	@RequestMapping("/show")
