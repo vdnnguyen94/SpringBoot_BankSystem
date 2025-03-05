@@ -127,4 +127,52 @@ public class BankAppController {
 	    // Reload customer details
 	    return "redirect:/CustomerDetails/" + customerId;
 	}
+	
+	//Delete Account
+    @GetMapping("/deleteAccount/{accountNumber}")
+    public String deleteAccount(@PathVariable int accountNumber, RedirectAttributes redirectAttributes) {
+        Account account = accountRepository.findById(accountNumber)
+                .orElseThrow(() -> new RuntimeException("Account not found"));
+
+        int customerId = account.getCustomer().getCustomerId();
+        accountRepository.delete(account);
+        redirectAttributes.addFlashAttribute("successMessage", "Account deleted successfully!");
+        return "redirect:/CustomerDetails/" + customerId;
+    }
+    
+    //Update balance will query account and customer return to the update form
+    @GetMapping("/UpdateAccount/{accountNumber}")
+    public String updateBalanceForm(@PathVariable int accountNumber, Model model) {
+        Account account = accountRepository.findByAccountNumber(accountNumber);
+        
+        if (account == null) {
+            throw new RuntimeException("Account not found");
+        }
+
+        Customer customer = account.getCustomer();
+        
+        model.addAttribute("customer", customer);
+        model.addAttribute("account", account);
+        
+        return "updatebalance"; 
+    }
+    
+    @PostMapping("/UpdateAccount")
+    public String updateBalance(@RequestParam int accountNumber, 
+                                @RequestParam double balance, 
+                                RedirectAttributes redirectAttributes) {
+        Account account = accountRepository.findByAccountNumber(accountNumber);
+
+        if (account == null) {
+            throw new RuntimeException("Account not found");
+        }
+
+        
+        account.setBalance(balance);
+        accountRepository.save(account);
+        
+        Customer customer = account.getCustomer(); // Retrieve the customer
+        redirectAttributes.addFlashAttribute("successMessage", "Successfully updated balance");
+        return "redirect:/CustomerDetails/" + customer.getCustomerId();
+    }
 }
