@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="ISO-8859-1">
+    <title>Customer Registration</title>
+    <link rel="stylesheet" type="text/css" href="/css/style.css">
+</head>
+<body>
+
+    <!-- Navbar -->
+    <nav class="navbar">
+        <div class="logo">Banking App</div>
+        <ul class="nav-links">
+            <li><a href="/show">List Customers</a></li>
+			<li><a href="/admin">Admin Features</a></li>
+        </ul>
+    </nav>
+
+ <div class="container">
+        <h1>Admin Dashboard</h1>
+
+        <form action="/admin/lowBalance" method="get">
+            <button type="submit">Accounts Below Min Balance</button>
+        </form>
+
+        <form action="/admin/premiumSavings" method="get">
+            <button type="submit">Customers with Savings > $1000</button>
+        </form>
+
+        <form action="/admin/odCheque" method="get">
+            <button type="submit">Customers with Overdraft</button>
+        </form>
+
+        <hr>
+
+        <!-- Display Accounts if available -->
+        <div th:if="${contentAccounts}">
+            <h2>Accounts Below Minimum Balance</h2>
+            <ul th:if="${#lists.size(contentAccounts) > 0}">
+                <li th:each="account : ${contentAccounts}" th:text="${account.toString()}"></li>
+            </ul>
+            <p th:if="${#lists.isEmpty(contentAccounts)}" style="color: red;">No accounts match the search criteria.</p>
+        </div>
+
+        <!-- Display Customers if available -->
+        <div th:if="${contentCustomers}">
+            <h2>Customers</h2>
+            <ul th:if="${#lists.size(contentCustomers) > 0}">
+                <li th:each="customer : ${contentCustomers}" th:text="${customer.toString()}"></li>
+            </ul>
+            <p th:if="${#lists.isEmpty(contentCustomers)}" style="color: red;">No customers match the search criteria.</p>
+        </div>
+
+    </div>
+
+
+</body>
+</html>
