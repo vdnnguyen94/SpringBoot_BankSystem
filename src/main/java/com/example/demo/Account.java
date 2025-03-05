@@ -40,8 +40,7 @@ public class Account {
     public Account() {}
 
     
-    public Account(int  accountNumber, double balance, double overDraftLimit, Customer customer, AccountType accountType) {
-        this.accountNumber = accountNumber;
+    public Account(double balance, double overDraftLimit, Customer customer, AccountType accountType) {
         this.balance = balance;
         this.overDraftLimit = overDraftLimit;
         this.customer = customer;
@@ -52,9 +51,6 @@ public class Account {
         return accountNumber;
     }
 
-    public void setAccountNumber(int  accountNumber) {
-        this.accountNumber = accountNumber;
-    }
 
     public double getBalance() {
         return balance;
@@ -63,7 +59,14 @@ public class Account {
     public void setBalance(double balance) {
         this.balance = balance;
     }
+    
+    public double getOverDraftLimit() {
+    	return overDraftLimit;
+    }
 
+    public void setOverDraftLimit(double overDraftLimit) {
+    	this.overDraftLimit = overDraftLimit;
+    }
     public Customer getCustomer() {
         return customer;
     }

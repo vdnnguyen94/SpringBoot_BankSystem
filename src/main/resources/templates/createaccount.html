@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Account Details</title>
+    <link rel="stylesheet" type="text/css" href="/css/style.css">
+    <script>
+        function checkOverDraft() {
+            var selectedType = document.getElementById("accountType").selectedOptions[0];
+            var hasOverDraft = selectedType.getAttribute("data-overdraft") === "true";
+
+            var overDraftInput = document.getElementById("overDraftLimit");
+            overDraftInput.value = hasOverDraft ? "" : "0";
+            overDraftInput.disabled = !hasOverDraft;
+        }
+    </script>
+</head>
+<body>
+
+    <!-- Navbar -->
+    <nav class="navbar">
+        <div class="logo">Banking App</div>
+        <ul class="nav-links">
+            <li><a href="/">Home</a></li>
+            <li><a href="/show">List Customers</a></li>
+        </ul>
+    </nav>
+
+    <div class="container">
+        <form th:action="@{/CreateAccount}" method="post">
+            <h1>Customer Details</h1>
+            <table>
+                <tr>
+                    <td><label for="customerId">Customer ID</label></td>
+                    <td><input type="text"  th:value="${customer.customerId}" readonly disabled ></td>
+                </tr>
+                <tr>
+                    <td><input type="hidden" name="customerId" th:value="${customer.customerId}" readonly ></td>
+                </tr>
+                <tr>
+                    <td><label for="username">Username</label></td>
+                    <td><input type="text" name="username" th:value="${customer.username}" readonly disabled></td>
+                </tr>
+                <tr>
+                    <td><label for="customerName">Customer Name</label></td>
+                    <td><input type="text" name="customerName" th:value="${customer.customerName}" readonly disabled></td>
+                </tr>
+                <tr>
+                    <td><label for="dob">Date of Birth</label></td>
+                    <td><input type="date" name="dob" th:value="${customer.dob}" readonly disabled></td>
+                </tr>
+                <tr>
+                    <td><label for="address">Address</label></td>
+                    <td><input type="text" name="address" th:value="${customer.address}" readonly disabled> </td>
+                </tr>
+                <tr>
+                    <td><label for="city">City</label></td>
+                    <td><input type="text" name="city" th:value="${customer.city}" readonly disabled></td>
+                </tr>
+                <tr>
+                    <td><label for="postalcode">Postal Code</label></td>
+                    <td><input type="text" name="postalcode" th:value="${customer.postalcode}" readonly disabled></td>
+                </tr>
+                <tr>
+                    <td><label for="emailId">Email</label></td>
+                    <td><input type="email" name="emailId" th:value="${customer.emailId}" readonly disabled> </td>
+                </tr>
+                <tr>
+                    <td><label for="phone">Phone</label></td>
+                    <td><input type="tel" name="phone" th:value="${customer.phone}" readonly disabled> </td>
+                </tr>
+            </table>
+            <h2>Create Account</h2>
+
+            <table>
+                <tr>
+                    <td>Account Type:</td>
+                    <td>
+                        <select id="accountType" name="accountTypeId" onchange="checkOverDraft()">
+                            <option th:each="type : ${accountTypes}" 
+                                    th:value="${type.accountTypeId}"
+                                    th:text="${type}"
+                                    th:attr="data-overdraft=${type.hasOverDraft}">
+                            </option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Initial Balance:</td>
+                    <td><input type="number" name="balance" step="0.01" required></td>
+                </tr>
+                <tr>
+                    <td>OverDraft Limit:</td>
+                    <td><input type="number" id="overDraftLimit" name="overDraftLimit" step="0.01" value="0" disabled></td>
+                </tr>
+            </table>
+
+
+            <input type="submit" value="Create Account">
+        </form>
+
+	</div>
+</body>
+</html>

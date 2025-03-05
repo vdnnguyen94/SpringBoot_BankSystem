@@ -24,6 +24,9 @@ public class BankAppController {
 	@Autowired
 	private AccountRepository accountRepository;
 	
+	@Autowired
+	private AccountTypeRepository accountTypeRepository;
+	
 	@RequestMapping("/")
 	public String home()
 	{
@@ -174,5 +177,46 @@ public class BankAppController {
         Customer customer = account.getCustomer(); // Retrieve the customer
         redirectAttributes.addFlashAttribute("successMessage", "Successfully updated balance");
         return "redirect:/CustomerDetails/" + customer.getCustomerId();
+    }
+    
+    @GetMapping("/CreateAccount/{customerId}")
+    public String createAccountForm(@PathVariable int customerId, Model model) {
+        Customer customer = customerRepository.findById(customerId)
+                .orElseThrow(() -> new RuntimeException("Customer not found"));
+        
+        List<AccountType> accountTypes = accountTypeRepository.findAll(); // Fetch account types
+
+        model.addAttribute("customer", customer);
+        model.addAttribute("accountTypes", accountTypes);
+        model.addAttribute("account", new Account()); 
+
+        return "createaccount"; 
+    }
+    
+    @PostMapping("/CreateAccount")
+    public String createAccount(@RequestParam int customerId, 
+                                @RequestParam int accountTypeId, 
+                                @RequestParam double balance, 
+                                @RequestParam(required = false, defaultValue = "0") double overDraftLimit, 
+                                RedirectAttributes redirectAttributes) {
+        
+        Customer customer = customerRepository.findById(customerId)
+                .orElseThrow(() -> new RuntimeException("Customer not found"));
+        
+        AccountType accountType = accountTypeRepository.findById(accountTypeId)
+                .orElseThrow(() -> new RuntimeException("Account Type not found"));
+        
+        if (!accountType.isHasOverDraft()) {
+            overDraftLimit = 0; // Set overdraft limit to 0 if the account type does not allow overdraft
+        }
+
+        Account newAccount = new Account(balance, overDraftLimit, customer, accountType);
+
+
+        accountRepository.save(newAccount);
+
+        redirectAttributes.addFlashAttribute("successMessage", "Account created successfully!");
+
+        return "redirect:/CustomerDetails/" + customerId;
     }
 }
