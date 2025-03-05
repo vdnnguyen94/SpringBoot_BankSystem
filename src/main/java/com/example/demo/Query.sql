@@ -43,7 +43,7 @@ CREATE TABLE Account (
 -- Inserting sample records into Customer
 INSERT INTO Customer (customerId, username, password, customerName, dob, address, city, postalcode, emailId, phone) 
 VALUES 
-(101,'vannguyen', 'qwe123', 'Van Doe', '1994-06-14', '15 Dundas', 'London', 'N5B2N6', 'vannguyen@email.com', '5195548745'),
+(101,'vannguyen', 'qwe123', 'Van Nguyen', '1994-06-14', '15 Dundas', 'London', 'N5B2N6', 'vannguyen@email.com', '5195548745'),
 (103,'bot2', 'qwe123', 'Testing Bot 2', '2000-12-24', '5 Queen St', 'Toronto', 'M2K1N4', 'bot2@email.com', '6745219813'),
 (102,'bot1', 'qwe123', 'Ethan Smith', '1985-07-15', '456 Park Ave', 'Toronto', 'M2K1N4', 'bot1@email.com', '5458743652');
 
